@@ -23,7 +23,11 @@ const TopRatedCard = ({ product }: any) => {
         sx={{
           position: "relative",
           width: "100%",
-          height: "300px",
+          height: {
+            xs: "325px",
+            sm: "325px",
+            md: "300px",
+          },
         }}
       >
         <Image

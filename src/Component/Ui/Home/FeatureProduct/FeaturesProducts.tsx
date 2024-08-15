@@ -42,6 +42,7 @@ const FeaturesProducts = () => {
     <Container
       sx={{
         marginBottom: "100px",
+        marginTop: "100px",
       }}
     >
       <Box>
@@ -50,64 +51,67 @@ const FeaturesProducts = () => {
           component="h1"
           fontWeight={600}
           textAlign="center"
+          fontSize={{
+            xs: "1.5rem",
+            sm: "2rem",
+          }}
         >
           Features Post
         </Typography>
       </Box>
-      <Grid container spacing={3} my={3}>
-        <Grid item md={3}>
-          <Box
-            sx={{
-              width: "100%",
-              height: "full",
-            }}
-          >
-            <Image
-              src={features}
-              alt="features"
-              height={100}
-              width={100}
-              style={{
+      <Box
+        sx={{
+          marginTop: "80px",
+        }}
+      >
+        <Grid container spacing={{ sm: 3, xs: 3 }} my={3}>
+          <Grid item xs={12} md={3}>
+            <Box
+              sx={{
                 width: "100%",
-                height: "50%",
+                height: "full",
               }}
-            />
-          </Box>
-          <Box
-            sx={{
-              width: "100%",
-              height: "full",
-              marginTop: "10px",
-            }}
-          >
-            <Image
-              src={features1}
-              alt="features"
-              height={100}
-              width={100}
-              style={{
+            >
+              <Image
+                src={features}
+                alt="features"
+                height={100}
+                width={100}
+                style={{
+                  width: "100%",
+                  height: "50%",
+                }}
+              />
+            </Box>
+            <Box
+              sx={{
                 width: "100%",
-                height: "50%",
+                height: "full",
+                marginTop: "10px",
               }}
-            />
-          </Box>
-        </Grid>
-        <Grid item md={9}>
-          <Grid
-            container
-            spacing={3}
-            sx={{
-              marginLeft: "1px",
-            }}
-          >
+            >
+              <Image
+                src={features1}
+                alt="features"
+                height={100}
+                width={100}
+                style={{
+                  width: "100%",
+                  height: "50%",
+                }}
+              />
+            </Box>
+          </Grid>
+
+          <Grid container item xs={12} md={9} lg={9} spacing={3}>
             {productData.map((product, index) => (
-              <Grid item md={4} key={index}>
+              <Grid item xs={12} sm={6} md={4} key={index}>
                 <TopRatedCard product={product} />
               </Grid>
             ))}
           </Grid>
         </Grid>
-      </Grid>
+      </Box>
     </Container>
   );
 };

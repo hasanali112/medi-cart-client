@@ -49,13 +49,17 @@ const Blog = () => {
           component="h1"
           fontWeight={600}
           textAlign="center"
+          fontSize={{
+            xs: "1.8rem",
+            sm: "2rem",
+          }}
         >
           Recent Blog
         </Typography>
       </Box>
       <Grid container spacing={2} my={6}>
         {blogData.map((blog, index) => (
-          <Grid item md={3} key={index}>
+          <Grid item xs={12} sm={6} md={3} key={index}>
             <BlogCard blog={blog} />
           </Grid>
         ))}

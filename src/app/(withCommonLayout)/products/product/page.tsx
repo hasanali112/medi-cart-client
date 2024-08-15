@@ -1,7 +1,8 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
+
 import spray from "@/assets/spray.png";
 import spray1 from "@/assets/stethoscope.png";
-import TopRatedCard from "./TopRatedCard";
+import TopRatedCard from "@/Component/Ui/Home/TopRated/TopRatedCard";
 
 const productData = [
   {
@@ -34,36 +35,18 @@ const productData = [
   },
 ];
 
-const TopRatedProduct = () => {
+const DynamicProduct = () => {
   return (
-    <Container
-      sx={{
-        marginTop: "50px",
-      }}
-    >
-      <Box>
-        <Typography
-          variant="h3"
-          component="h1"
-          fontWeight={600}
-          textAlign="center"
-          fontSize={{
-            xs: "1.5rem",
-            sm: "2rem",
-          }}
-        >
-          Trending Products
-        </Typography>
-      </Box>
-      <Grid container spacing={2} my={6}>
+    <Box>
+      <Grid container spacing={2}>
         {productData.map((product, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
+          <Grid item xs={12} sm={6} md={4} key={index}>
             <TopRatedCard product={product} />
           </Grid>
         ))}
       </Grid>
-    </Container>
+    </Box>
   );
 };
 
-export default TopRatedProduct;
+export default DynamicProduct;

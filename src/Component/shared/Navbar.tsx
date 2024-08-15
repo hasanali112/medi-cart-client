@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Box,
   Button,
@@ -14,8 +16,15 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import ForMobileSerach from "./ForMobileSerach";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Link from "next/link";
+
+import dynamic from "next/dynamic";
 
 const Navbar = () => {
+  const AuthButton = dynamic(
+    () => import("@/Component/Ui/authButton/AuthButton"),
+    { ssr: false }
+  );
   return (
     <header>
       <Container
@@ -168,9 +177,7 @@ const Navbar = () => {
           >
             <ForMobileSerach />
           </Box>
-          <Box>
-            <Button>Login</Button>
-          </Box>
+          <AuthButton />
         </Stack>
         <Stack
           direction={{ sm: "row" }}
@@ -210,14 +217,20 @@ const Navbar = () => {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                gap: 3,
+                gap: { xs: 2, sm: 3 },
               }}
             >
-              <Typography>Home</Typography>
-              <Typography>Product</Typography>
+              <Typography component={Link} href="/">
+                Home
+              </Typography>
+              <Typography component={Link} href="/products/product">
+                Product
+              </Typography>
               <Typography>About</Typography>
               <Typography>Contact</Typography>
-              <Typography>Dashboard</Typography>
+              <Typography component={Link} href="/dashboard">
+                Dashboard
+              </Typography>
             </Box>
           </Box>
           <Box
