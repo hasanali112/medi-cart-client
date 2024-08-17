@@ -19,12 +19,15 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Link from "next/link";
 
 import dynamic from "next/dynamic";
+import { useAppSelector } from "@/redux/hooks";
 
 const Navbar = () => {
   const AuthButton = dynamic(
     () => import("@/Component/Ui/authButton/AuthButton"),
     { ssr: false }
   );
+
+  const { products } = useAppSelector((store) => store.cart);
   return (
     <header>
       <Container
@@ -217,7 +220,7 @@ const Navbar = () => {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                gap: { xs: 2, sm: 3 },
+                gap: { xs: 2, sm: 3, lg: 7 },
               }}
             >
               <Typography component={Link} href="/">
@@ -248,8 +251,27 @@ const Navbar = () => {
                 gap: 1,
               }}
             >
-              <ShoppingCartIcon />
-              <Typography>Your cart</Typography>
+              <Box
+                sx={{
+                  position: "relative",
+                }}
+              >
+                <ShoppingCartIcon />
+
+                <Typography
+                  sx={{
+                    position: "absolute",
+                    top: "-14px",
+                    right: "-5px",
+                  }}
+                  color="primary.main"
+                >
+                  {products?.length}
+                </Typography>
+              </Box>
+              <Typography component={Link} href="/cart">
+                Your cart
+              </Typography>
             </Box>
           </Box>
         </Stack>

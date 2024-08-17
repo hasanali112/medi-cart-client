@@ -70,7 +70,7 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
         },
         {
           title: "Categories",
-          path: `${role}/Categories`,
+          path: `${role}/categories`,
           icon: StorageIcon,
         }
       );

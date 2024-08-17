@@ -7,6 +7,8 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
+import spray from "@/assets/spray.png";
 
 const TopRatedCard = ({ product }: any) => {
   return (
@@ -30,17 +32,19 @@ const TopRatedCard = ({ product }: any) => {
           },
         }}
       >
-        <Image
-          src={product.image}
-          alt="card image"
-          height={200}
-          width={400}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
-        />
+        <Link href={`/item/${product._id}`}>
+          <Image
+            src={product.photos ? product?.photos[0] : spray}
+            alt="card image"
+            height={200}
+            width={400}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
+        </Link>
         {product.new && (
           <Box
             sx={{
@@ -60,7 +64,7 @@ const TopRatedCard = ({ product }: any) => {
       </Box>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {product.title}
+          {product.name}
         </Typography>
         <Typography
           variant="body1"
@@ -70,7 +74,7 @@ const TopRatedCard = ({ product }: any) => {
             gap: 3,
           }}
         >
-          ${product.presrntPrice}
+          ${product.price}
           <Typography
             component="span"
             color="primary.main"

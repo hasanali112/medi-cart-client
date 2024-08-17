@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* @media (max-width: 0px) {
+  #banner-image {
+    height: 400px;
+  }
+}
+
+@media (max-width: 600px) {
+  #banner-image {
+    height: 500px;
+  }
+}
+
+@media (max-width: 900px) {
+  .responsive-image {
+    height: 400px;
+  }
+} */

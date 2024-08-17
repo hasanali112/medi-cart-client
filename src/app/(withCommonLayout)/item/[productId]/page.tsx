@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Box,
   Button,
@@ -11,6 +13,10 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import spray from "@/assets/spray.png";
+import { useState } from "react";
+import { useAppDispatch } from "@/redux/hooks";
+import { addToCart } from "@/redux/features/cartSlice";
+import { useGetSingleProductQuery } from "@/redux/api/productApi";
 
 type TParams = {
   params: {
@@ -19,16 +25,29 @@ type TParams = {
 };
 
 const ProductDetail = ({ params }: TParams) => {
-  const product = {
-    id: 1,
-    name: "Premium Fitness Treadmill",
-    price: 999.99,
-    futurePrice: 300.99,
-    description:
-      "This high-end treadmill offers a smooth and quiet operation, perfect for any home gym.",
-    metaKey: "Home Fitness, Treadmill, Cardio, Exercise Equipment",
-    photos: [spray, spray, spray],
+  const [increase, setIncrease] = useState(1);
+  const dispatch = useAppDispatch();
+  const { data: product, isLoading } = useGetSingleProductQuery(
+    params.productId
+  );
+
+  const handleDecrease = () => {
+    if (increase <= 1) {
+      alert("Increase should be at least 1");
+    } else {
+      setIncrease((pv) => pv - 1);
+    }
   };
+
+  const handleCart = (product: any) => {
+    const { _id, name, photos, price } = product;
+    const productData = { _id, name, photos, price, quantity: increase };
+    dispatch(addToCart(productData));
+  };
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <Container sx={{ height: "100vh" }}>
@@ -38,8 +57,8 @@ const ProductDetail = ({ params }: TParams) => {
             <Grid item xs={12} md={5}>
               <Box>
                 <Image
-                  src={product.photos[0]}
-                  alt="prodcut"
+                  src={product?.photos[0]}
+                  alt="product"
                   width={420}
                   height={400}
                   style={{
@@ -50,7 +69,7 @@ const ProductDetail = ({ params }: TParams) => {
               </Box>
               <Box my={1}>
                 <Stack direction="row" spacing={1}>
-                  {product.photos.map((photo, index) => (
+                  {product?.photos.map((photo: string, index: number) => (
                     <Image
                       key={index}
                       src={photo}
@@ -68,7 +87,7 @@ const ProductDetail = ({ params }: TParams) => {
             </Grid>
             <Grid item xs={12} md={7}>
               <Typography variant="h4" component="h1" my={1}>
-                {product.name}
+                {product?.name}
               </Typography>
               <Stack direction="row" alignItems="center" spacing={3} my={3}>
                 <Typography
@@ -77,7 +96,7 @@ const ProductDetail = ({ params }: TParams) => {
                   component="h1"
                   fontWeight={700}
                 >
-                  ${product.price.toFixed(2)}
+                  ${product?.price.toFixed(2)}
                 </Typography>
                 <Typography
                   variant="h6"
@@ -88,7 +107,7 @@ const ProductDetail = ({ params }: TParams) => {
                   }}
                   fontWeight={500}
                 >
-                  ${product.futurePrice}
+                  ${product?.futurePrice}
                 </Typography>
               </Stack>
               <Divider />
@@ -98,13 +117,21 @@ const ProductDetail = ({ params }: TParams) => {
               <Divider />
               <Stack direction="row" spacing={10} alignItems="center" my={3}>
                 <Box>
-                  <Button variant="outlined">-</Button>{" "}
+                  <Button onClick={handleDecrease} variant="outlined">
+                    -
+                  </Button>{" "}
                   <Box component="span" mx={3}>
-                    1
+                    {increase}
                   </Box>
-                  <Button variant="outlined">+</Button>
+                  <Button
+                    onClick={() => setIncrease((pv) => pv + 1)}
+                    variant="outlined"
+                  >
+                    +
+                  </Button>
                 </Box>
                 <Button
+                  onClick={() => handleCart(product)}
                   variant="outlined"
                   color="primary"
                   sx={{ marginRight: 1 }}
@@ -119,7 +146,7 @@ const ProductDetail = ({ params }: TParams) => {
                 my={3}
                 sx={{ width: "40%" }}
               >
-                {product.description}
+                {product?.description}
               </Typography>
             </Grid>
           </Grid>

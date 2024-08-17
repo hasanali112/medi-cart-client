@@ -2,42 +2,11 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import features from "@/assets/11.jpg";
 import features1 from "@/assets/12.jpg";
-import spray from "@/assets/spray.png";
-import spray1 from "@/assets/stethoscope.png";
 import TopRatedCard from "../TopRated/TopRatedCard";
+import { allProduct } from "@/services/actions/productGet";
 
-const productData = [
-  {
-    image: spray,
-    title: "Pain Relief Tablets",
-    presrntPrice: "12.99",
-    futurePrice: "30.98",
-    new: true,
-  },
-  {
-    image: spray1,
-    title: "Cough Syrup",
-    presrntPrice: "17.99",
-    futurePrice: "25.98",
-    new: false,
-  },
-  {
-    image: spray,
-    title: "Pain Relief Tablets",
-    presrntPrice: "34.99",
-    futurePrice: "67.98",
-    new: true,
-  },
-  {
-    image: spray1,
-    title: "Cough Syrup",
-    presrntPrice: "40.99",
-    futurePrice: "50.98",
-    new: false,
-  },
-];
-
-const FeaturesProducts = () => {
+const FeaturesProducts = async () => {
+  const productData = await allProduct();
   return (
     <Container
       sx={{
@@ -76,7 +45,7 @@ const FeaturesProducts = () => {
                 src={features}
                 alt="features"
                 height={100}
-                width={100}
+                width={500}
                 style={{
                   width: "100%",
                   height: "50%",
@@ -94,7 +63,7 @@ const FeaturesProducts = () => {
                 src={features1}
                 alt="features"
                 height={100}
-                width={100}
+                width={500}
                 style={{
                   width: "100%",
                   height: "50%",
@@ -104,8 +73,8 @@ const FeaturesProducts = () => {
           </Grid>
 
           <Grid container item xs={12} md={9} lg={9} spacing={3}>
-            {productData.map((product, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
+            {productData.data?.map((product: any) => (
+              <Grid item xs={12} sm={6} md={4} key={product._id}>
                 <TopRatedCard product={product} />
               </Grid>
             ))}
