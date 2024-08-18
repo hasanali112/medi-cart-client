@@ -8,10 +8,10 @@ const ManageUser = () => {
   const { data, isLoading } = useGetUserQuery({});
 
   const columns: GridColDef[] = [
-    { field: "name", headerName: "name", width: 200 },
-    { field: "email", headerName: "email", width: 300 },
-    { field: "role", headerName: "role", width: 200 },
-    { field: "address", headerName: "address", width: 300 },
+    { field: "name", headerName: "Name", width: 200 },
+    { field: "email", headerName: "Email", width: 300 },
+    { field: "role", headerName: "Role", width: 200 },
+    { field: "address", headerName: "Address", width: 300 },
   ];
 
   return (

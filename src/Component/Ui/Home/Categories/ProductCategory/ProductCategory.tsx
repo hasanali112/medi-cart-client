@@ -1,46 +1,16 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
+"use client";
+
+import { useGetCategoryQuery } from "@/redux/api/categoryApi";
+import { Box, Container, Grid, Skeleton, Typography } from "@mui/material";
 import Image from "next/image";
 
-const categories = [
-  {
-    name: "Medicine",
-    slug: "medicine",
-    categoryType: "primary",
-    thumbnail: "https://i.ibb.co/G9XfVZV/6.png",
-  },
-  {
-    name: "Suppliment",
-    slug: "supplicment",
-    categoryType: "primary",
-    thumbnail: "https://i.ibb.co/RcFQKZM/4.png",
-  },
-  {
-    name: "Beauty",
-    slug: "beauty",
-    categoryType: "primary",
-    thumbnail: "https://i.ibb.co/DkZ9GCZ/5.png",
-  },
-  {
-    name: "Food And Suppliment",
-    slug: "food",
-    categoryType: "primary",
-    thumbnail: "https://i.ibb.co/6PfM2pp/3.png",
-  },
-  {
-    name: "Medicine",
-    slug: "medicine",
-    categoryType: "primary",
-    thumbnail: "https://i.ibb.co/G9XfVZV/6.png",
-  },
-  {
-    name: "Medicine",
-    slug: "medicine",
-    categoryType: "primary",
-    thumbnail: "https://i.ibb.co/G9XfVZV/6.png",
-  },
-];
-
 const ProductCategory = () => {
+  const { data, isLoading } = useGetCategoryQuery({});
+
+  if (isLoading) {
+    return <Skeleton variant="rectangular" width={210} height={118} />;
+  }
+
   return (
     <Container>
       <Box>
@@ -58,7 +28,7 @@ const ProductCategory = () => {
         </Typography>
       </Box>
       <Grid container spacing={2} my={4}>
-        {categories.map((category: any, index: number) => (
+        {data?.map((category: any, index: number) => (
           <Grid item xs={6} md={2} key={index}>
             <Box
               component="div"

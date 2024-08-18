@@ -1,9 +1,14 @@
+"use client";
+
 import { Box, Typography } from "@mui/material";
 import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
 import Image from "next/image";
 import banner2 from "@/assets/banner-2.jpg";
+import { useGetCategoryQuery } from "@/redux/api/categoryApi";
 
 const ProductSideBar = () => {
+  const { data } = useGetCategoryQuery({});
+
   return (
     <Box>
       <Box
@@ -15,9 +20,10 @@ const ProductSideBar = () => {
       >
         <Typography
           component="p"
-          fontSize="1.2rem"
+          fontSize="1.4rem"
+          fontWeight={600}
           sx={{
-            margin: "20px 30px",
+            margin: "15px 30px",
           }}
         >
           Filter by Category
@@ -25,13 +31,19 @@ const ProductSideBar = () => {
             <HorizontalRuleIcon />
           </Box>
         </Typography>
-        <Typography>Medicine</Typography>
-        <Typography>Medicine</Typography>
-        <Typography>Medicine</Typography>
-        <Typography>Medicine</Typography>
-        <Typography>Medicine</Typography>
-        <Typography>Medicine</Typography>
-        <Typography>Medicine</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 3,
+            ml: "15px",
+            paddingBottom: "20px",
+          }}
+        >
+          {data?.map((category: any) => (
+            <Typography key={category._id}>{category?.name}</Typography>
+          ))}
+        </Box>
       </Box>
       <Box
         sx={{
@@ -42,9 +54,10 @@ const ProductSideBar = () => {
       >
         <Typography
           component="p"
-          fontSize="1.2rem"
+          fontSize="1.4rem"
+          fontWeight={600}
           sx={{
-            margin: "20px 30px",
+            margin: "15px 30px",
           }}
         >
           Filter by Price
@@ -52,13 +65,23 @@ const ProductSideBar = () => {
             <HorizontalRuleIcon />
           </Box>
         </Typography>
-        <Typography>Medicine</Typography>
-        <Typography>Medicine</Typography>
-        <Typography>Medicine</Typography>
-        <Typography>Medicine</Typography>
-        <Typography>Medicine</Typography>
-        <Typography>Medicine</Typography>
-        <Typography>Medicine</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 3,
+            ml: "15px",
+            paddingBottom: "20px",
+          }}
+        >
+          <Typography>$0.00 - $10.00</Typography>
+          <Typography>$10.00 - $50.00</Typography>
+          <Typography>$50.00 - $100.00</Typography>
+          <Typography>$100.00 - $150.00</Typography>
+          <Typography>$150.00 - $200.00</Typography>
+          <Typography>$200.00 - $250.00</Typography>
+          <Typography>$250.00 - $300.00</Typography>
+        </Box>
       </Box>
       <Box
         sx={{

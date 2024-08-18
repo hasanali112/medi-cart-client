@@ -20,12 +20,16 @@ import Link from "next/link";
 
 import dynamic from "next/dynamic";
 import { useAppSelector } from "@/redux/hooks";
+import { getTokenFormLocalStorage } from "@/services/auth.service";
 
 const Navbar = () => {
   const AuthButton = dynamic(
     () => import("@/Component/Ui/authButton/AuthButton"),
     { ssr: false }
   );
+
+  const userInfo = getTokenFormLocalStorage();
+  console.log(userInfo);
 
   const { products } = useAppSelector((store) => store.cart);
   return (
@@ -231,7 +235,10 @@ const Navbar = () => {
               </Typography>
               <Typography>About</Typography>
               <Typography>Contact</Typography>
-              <Typography component={Link} href="/dashboard">
+              <Typography
+                component={Link}
+                href={`/dashboard/${userInfo?.role}`}
+              >
                 Dashboard
               </Typography>
             </Box>

@@ -11,6 +11,9 @@ import Link from "next/link";
 import spray from "@/assets/spray.png";
 
 const TopRatedCard = ({ product }: any) => {
+  const discountPrice =
+    product?.price + (product?.discount * product?.price) / 100;
+
   return (
     <Card
       sx={{
@@ -82,7 +85,7 @@ const TopRatedCard = ({ product }: any) => {
               textDecoration: "line-through",
             }}
           >
-            ${product.futurePrice}
+            ${discountPrice}
           </Typography>
         </Typography>
       </CardContent>
