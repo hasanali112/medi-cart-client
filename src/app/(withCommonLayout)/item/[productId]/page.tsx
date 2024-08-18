@@ -17,6 +17,8 @@ import { useState } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { addToCart } from "@/redux/features/cartSlice";
 import { useGetSingleProductQuery } from "@/redux/api/productApi";
+import { discountPriceCalculation } from "@/Component/Ui/Home/TopRated/TopRatedCard";
+import TopratedProduct from "@/Component/Ui/SingleProduct/TopratedProduct";
 
 type TParams = {
   params: {
@@ -49,9 +51,14 @@ const ProductDetail = ({ params }: TParams) => {
     return <p>Loading...</p>;
   }
 
+  const discountPrice = discountPriceCalculation(
+    product?.price,
+    product?.discount
+  );
+
   return (
-    <Container sx={{ height: "100vh" }}>
-      <Stack direction="row" spacing={3}>
+    <Container>
+      <Stack direction="row" spacing={3} gap={4}>
         <Box>
           <Grid container spacing={4}>
             <Grid item xs={12} md={5}>
@@ -107,7 +114,7 @@ const ProductDetail = ({ params }: TParams) => {
                   }}
                   fontWeight={500}
                 >
-                  ${product?.futurePrice}
+                  ${discountPrice}
                 </Typography>
               </Stack>
               <Divider />
@@ -150,6 +157,26 @@ const ProductDetail = ({ params }: TParams) => {
               </Typography>
             </Grid>
           </Grid>
+        </Box>
+        <Box>
+          <Box
+            sx={{
+              border: "1px solid lightgray",
+              width: "400px",
+              height: "450px",
+            }}
+          >
+            <Typography
+              variant="h5"
+              component="h1"
+              fontWeight={600}
+              textAlign="center"
+              mt={4}
+            >
+              Top Rated Product
+            </Typography>
+            <TopratedProduct />
+          </Box>
         </Box>
       </Stack>
     </Container>

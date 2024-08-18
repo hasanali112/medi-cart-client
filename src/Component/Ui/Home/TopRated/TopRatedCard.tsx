@@ -10,9 +10,16 @@ import Image from "next/image";
 import Link from "next/link";
 import spray from "@/assets/spray.png";
 
+export const discountPriceCalculation = (price: number, discount: number) => {
+  const calculatedPrice = price + (discount * price) / 100;
+  return calculatedPrice;
+};
+
 const TopRatedCard = ({ product }: any) => {
-  const discountPrice =
-    product?.price + (product?.discount * product?.price) / 100;
+  const discountPrice = discountPriceCalculation(
+    product?.price,
+    product?.discount
+  );
 
   return (
     <Card
