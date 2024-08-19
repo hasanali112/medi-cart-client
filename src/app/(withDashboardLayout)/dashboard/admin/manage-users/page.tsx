@@ -8,15 +8,16 @@ const ManageUser = () => {
   const { data, isLoading } = useGetUserQuery({});
 
   const columns: GridColDef[] = [
+    { field: "_id", headerName: "User ID", width: 250 },
     { field: "name", headerName: "Name", width: 200 },
     { field: "email", headerName: "Email", width: 300 },
-    { field: "role", headerName: "Role", width: 200 },
-    { field: "address", headerName: "Address", width: 300 },
+    { field: "role", headerName: "Role", width: 100 },
+    { field: "address", headerName: "Address", width: 200 },
   ];
 
   return (
     <Box>
-      <Typography variant="h4" component="h1" my={3}>
+      <Typography variant="h5" component="h1" my={3} fontWeight={700}>
         User Manage
       </Typography>
       {!isLoading ? (
@@ -31,7 +32,6 @@ const ManageUser = () => {
               },
             }}
             pageSizeOptions={[5, 10]}
-            checkboxSelection
           />
         </Box>
       ) : (

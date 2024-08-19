@@ -4,6 +4,7 @@ import { Josefin_Sans } from "next/font/google";
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import Providers from "@/lib/Providers/Providers";
+import { Toaster } from "sonner";
 
 // Import the desired Google Font
 const josefinSans = Josefin_Sans({ subsets: ["latin"] });
@@ -23,7 +24,10 @@ export default function RootLayout({
       {/* Apply the font to the body */}
       <body className={josefinSans.className}>
         <Providers>
-          <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+          <AppRouterCacheProvider>
+            <Toaster position="top-center" />
+            {children}
+          </AppRouterCacheProvider>
         </Providers>
       </body>
     </html>

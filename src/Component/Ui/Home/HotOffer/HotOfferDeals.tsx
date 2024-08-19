@@ -26,7 +26,7 @@ const HotOfferDeals = () => {
         <Image
           src={hotdeal}
           alt="hotdeal"
-          width={400}
+          width={900}
           height={500}
           style={{
             height: "100%",

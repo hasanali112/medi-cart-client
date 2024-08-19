@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Container,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Container, Stack, TextField, Typography } from "@mui/material";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -21,17 +14,20 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useAppSelector } from "@/redux/hooks";
 import { getTokenFormLocalStorage } from "@/services/auth.service";
+import NavbarDropdown from "./Navbarcomponent/NavbarDropdown";
+import { useState } from "react";
 
 const Navbar = () => {
   const AuthButton = dynamic(
     () => import("@/Component/Ui/authButton/AuthButton"),
     { ssr: false }
   );
+  const [open, setOpen] = useState(false);
 
   const userInfo = getTokenFormLocalStorage();
-  console.log(userInfo);
 
   const { products } = useAppSelector((store) => store.cart);
+
   return (
     <header>
       <Container
@@ -133,6 +129,7 @@ const Navbar = () => {
       <Container
         sx={{
           padding: "15px 15px",
+          position: "relative",
         }}
       >
         <Stack
@@ -140,7 +137,7 @@ const Navbar = () => {
           alignItems="center"
           justifyContent="space-between"
         >
-          <Box>
+          <Box component={Link} href="/">
             <Typography variant="h4" component="h1" fontWeight={600}>
               Medi
               <Box component="span" color="primary.main">
@@ -150,18 +147,22 @@ const Navbar = () => {
           </Box>
           <Box
             sx={{
-              width: "40%",
+              width: { xs: "100%", sm: "40%" },
+              maxWidth: "500px",
               borderRadius: "100px",
               display: {
                 xs: "none",
                 sm: "block",
               },
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
             }}
           >
             <TextField
-              label="Search field"
+              label="Search here.."
               type="search"
-              fullWidth={true}
+              fullWidth
               size="small"
               InputProps={{
                 sx: {
@@ -184,7 +185,9 @@ const Navbar = () => {
           >
             <ForMobileSerach />
           </Box>
-          <AuthButton />
+          <Box sx={{ flexShrink: 0 }}>
+            <AuthButton />
+          </Box>
         </Stack>
         <Stack
           direction={{ sm: "row" }}
@@ -205,6 +208,8 @@ const Navbar = () => {
             }}
           >
             <Box
+              onClick={() => setOpen(!open)}
+              component="button"
               sx={{
                 display: "flex",
                 alignItems: "center",
@@ -212,32 +217,39 @@ const Navbar = () => {
                 backgroundColor: "primary.main",
                 color: "#fff",
                 padding: "15px 30px",
-                width: "100%",
+                width: { xs: "100%", sm: "200px", md: "300px", lg: "300px" },
               }}
             >
               <MenuIcon />
-              <Typography component="p" color="#fff">
-                Categories
-              </Typography>
+              <NavbarDropdown open={open} />
             </Box>
             <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
-                gap: { xs: 2, sm: 3, lg: 7 },
+                gap: { xs: 2, sm: 2, lg: 7 },
               }}
             >
-              <Typography component={Link} href="/">
+              <Typography component={Link} href="/" fontWeight={600}>
                 Home
               </Typography>
-              <Typography component={Link} href="/products/product">
+              <Typography
+                component={Link}
+                href="/products/product"
+                fontWeight={600}
+              >
                 Product
               </Typography>
-              <Typography>About</Typography>
-              <Typography>Contact</Typography>
+              <Typography component={Link} href="/" fontWeight={600}>
+                About
+              </Typography>
+              <Typography component={Link} href="/" fontWeight={600}>
+                Contact
+              </Typography>
               <Typography
                 component={Link}
                 href={`/dashboard/${userInfo?.role}`}
+                fontWeight={600}
               >
                 Dashboard
               </Typography>
@@ -264,7 +276,6 @@ const Navbar = () => {
                 }}
               >
                 <ShoppingCartIcon />
-
                 <Typography
                   sx={{
                     position: "absolute",
@@ -283,7 +294,6 @@ const Navbar = () => {
           </Box>
         </Stack>
       </Container>
-      <Box></Box>
     </header>
   );
 };

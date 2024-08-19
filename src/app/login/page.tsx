@@ -10,12 +10,15 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { getAccessToken } from "@/services/auth.service";
+import {
+  getAccessToken,
+  getTokenFormLocalStorage,
+} from "@/services/auth.service";
 import { loginUser } from "@/services/actions/loginUser";
 
 export type TFromValue = {
@@ -25,21 +28,25 @@ export type TFromValue = {
 
 const Login = () => {
   const router = useRouter();
+  const [userInfo, setUserInfo] = useState<any>(null);
+
+  useEffect(() => {
+    const user = getTokenFormLocalStorage();
+    setUserInfo(user);
+  }, []);
+
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<TFromValue>();
   const onSubmit: SubmitHandler<TFromValue> = async (values) => {
-    console.log(values);
     try {
       const res = await loginUser(values);
-      console.log(res);
       if (res?.token) {
         toast.success("Login success");
         getAccessToken({ accessToken: res?.token });
-        router.push("/dashboard");
+        router.push(`/dashboard/${userInfo?.role}`);
       }
     } catch (error: any) {
       console.log(error.message);

@@ -8,7 +8,7 @@ export const setTokenToLocalStore = (key: string, accessToken: string) => {
 
 export const getAccessTokenFromLocalStorage = (key: string) => {
   if (typeof window === "undefined" || !key) {
-    return null; // Returning null is more conventional when accessing localStorage
+    return null;
   }
 
   return localStorage.getItem(key);

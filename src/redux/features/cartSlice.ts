@@ -33,10 +33,16 @@ export const cartSlice = createSlice({
       );
       state.gradTotal = state.totalPrice + state.totalPrice * state.taxRate;
     },
+    clearCart: (state) => {
+      state.products = [];
+      state.selectedItem = 0;
+      state.totalPrice = 0;
+      state.gradTotal = 0;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, clearCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

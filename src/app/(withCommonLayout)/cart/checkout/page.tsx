@@ -16,8 +16,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 
 import { useRouter } from "next/navigation";
 
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useCreateOrderMutation } from "@/redux/api/orderApi";
+import { toast } from "sonner";
+import { clearCart } from "@/redux/features/cartSlice";
 
 export interface IUser {
   name: string;
@@ -30,11 +32,12 @@ const CheckoutPage = () => {
   const router = useRouter();
   const { products, gradTotal } = useAppSelector((store) => store.cart);
   const [createOrder, { isError }] = useCreateOrderMutation();
-  console.log(products);
+  const dispatch = useAppDispatch();
 
   const {
     register,
     handleSubmit,
+    reset,
     watch,
     formState: { errors },
   } = useForm<IUser>();
@@ -47,11 +50,14 @@ const CheckoutPage = () => {
       totalPrice: gradTotal,
       order: products,
     };
-    console.log(data);
-
     try {
-      const res = await createOrder(data);
-      console.log(res);
+      const res = await createOrder(data).unwrap();
+      if (res?._id) {
+        toast.success("Place your order successfully");
+        dispatch(clearCart());
+        reset();
+        router.push("/");
+      }
     } catch (err) {
       // Handle error (e.g., show an error message)
       console.error("Order creation failed:", err);

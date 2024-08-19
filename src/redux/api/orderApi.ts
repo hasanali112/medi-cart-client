@@ -5,20 +5,13 @@ const orderApi = baseApi.injectEndpoints({
     createOrder: build.mutation({
       query: (data) => ({
         url: "/order/create-order",
-        method: "post",
-        body: data,
-        responseHandler: (response: any) => {
-          if (response.ok) {
-            return { data: response.json() };
-          } else {
-            return { error: response.statusText };
-          }
-        },
+        method: "POST",
+        contentType: "application/json",
+        data,
       }),
       invalidatesTags: ["order"],
     }),
   }),
-  overrideExisting: true,
 });
 
 export const { useCreateOrderMutation } = orderApi;

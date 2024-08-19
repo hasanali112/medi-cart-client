@@ -6,19 +6,18 @@ import {
   Container,
   Divider,
   Grid,
-  ImageList,
-  ImageListItem,
   Stack,
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import spray from "@/assets/spray.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { addToCart } from "@/redux/features/cartSlice";
 import { useGetSingleProductQuery } from "@/redux/api/productApi";
 import { discountPriceCalculation } from "@/Component/Ui/Home/TopRated/TopRatedCard";
 import TopratedProduct from "@/Component/Ui/SingleProduct/TopratedProduct";
+import discount from "@/assets/productDetail.jpg";
+import SingleProductReview from "@/Component/Ui/Review/SingleProductReview";
 
 type TParams = {
   params: {
@@ -33,6 +32,14 @@ const ProductDetail = ({ params }: TParams) => {
     params.productId
   );
 
+  const [priceSet, setPriceSet] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (product) {
+      setPriceSet(product.price.toFixed(2));
+    }
+  }, [product]);
+
   const handleDecrease = () => {
     if (increase <= 1) {
       alert("Increase should be at least 1");
@@ -42,8 +49,14 @@ const ProductDetail = ({ params }: TParams) => {
   };
 
   const handleCart = (product: any) => {
-    const { _id, name, photos, price } = product;
-    const productData = { _id, name, photos, price, quantity: increase };
+    const { _id, name, photos } = product;
+    const productData = {
+      _id,
+      name,
+      photos,
+      price: priceSet,
+      quantity: increase,
+    };
     dispatch(addToCart(productData));
   };
 
@@ -55,6 +68,12 @@ const ProductDetail = ({ params }: TParams) => {
     product?.price,
     product?.discount
   );
+
+  const handleSetPrice = (newPrice: number) => {
+    priceSet === product?.price.toFixed(2)
+      ? setPriceSet(newPrice)
+      : setPriceSet(product?.price.toFixed(2));
+  };
 
   return (
     <Container>
@@ -103,24 +122,44 @@ const ProductDetail = ({ params }: TParams) => {
                   component="h1"
                   fontWeight={700}
                 >
-                  ${product?.price.toFixed(2)}
-                </Typography>
-                <Typography
-                  variant="h6"
-                  component="h1"
-                  color="primary.main"
-                  sx={{
-                    textDecoration: "line-through",
-                  }}
-                  fontWeight={500}
-                >
-                  ${discountPrice}
+                  ${priceSet}
+                  <Typography
+                    variant="h6"
+                    component="h1"
+                    color="primary.main"
+                    sx={{
+                      textDecoration: "line-through",
+                    }}
+                    fontWeight={500}
+                  >
+                    ${discountPrice}
+                  </Typography>
                 </Typography>
               </Stack>
               <Divider />
               <Typography variant="body1" paragraph my={3}>
                 Categories: Medicine
               </Typography>
+              <Divider />
+              <Stack direction="row" spacing={4} alignItems="center" my={3}>
+                <Typography variant="body1" paragraph my={3}>
+                  Select type :
+                </Typography>
+                <Box>
+                  <Button
+                    onClick={() => handleSetPrice(product?.variant?.price)}
+                    variant="outlined"
+                  >
+                    {product?.variant?.name}
+                  </Button>{" "}
+                  {/* <Button
+                    onClick={() => setIncrease((pv) => pv + 1)}
+                    variant="outlined"
+                  >
+                    6
+                  </Button> */}
+                </Box>
+              </Stack>
               <Divider />
               <Stack direction="row" spacing={10} alignItems="center" my={3}>
                 <Box>
@@ -146,15 +185,6 @@ const ProductDetail = ({ params }: TParams) => {
                   Add to Cart
                 </Button>
               </Stack>
-              <Divider />
-              <Typography
-                variant="body1"
-                component="span"
-                my={3}
-                sx={{ width: "40%" }}
-              >
-                {product?.description}
-              </Typography>
             </Grid>
           </Grid>
         </Box>
@@ -179,6 +209,36 @@ const ProductDetail = ({ params }: TParams) => {
           </Box>
         </Box>
       </Stack>
+      <Stack direction="row" justifyContent="space-between" my={3}>
+        <Box
+          sx={{
+            width: "900px",
+          }}
+        >
+          <Typography variant="h5" component="h1" fontWeight={500}>
+            Product Description
+          </Typography>
+          <Divider
+            sx={{
+              my: 3,
+            }}
+          />
+          <Typography
+            variant="body1"
+            component="span"
+            sx={{ width: "40%" }}
+            mt={4}
+          >
+            {product?.description}
+          </Typography>
+        </Box>
+        <Box>
+          <Image src={discount} alt="Discount" width={400} height={450} />
+        </Box>
+      </Stack>
+      <Box>
+        <SingleProductReview reviews={product?.reviews} />
+      </Box>
     </Container>
   );
 };
